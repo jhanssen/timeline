@@ -19,6 +19,19 @@ timeline.Item.prototype = {
     get added() { return this._added; }
 };
 
+function cropSprite(sprite, width, height)
+{
+    var texture = new PIXI.Texture(sprite.texture, new PIXI.Rectangle(0, 0, width, height));
+    return new PIXI.Sprite(texture);
+}
+
+function ensureSize(sprite, width, height)
+{
+    if (sprite.width <= width && sprite.height <= height)
+        return sprite;
+    return cropSprite(sprite, Math.min(sprite.width, width), Math.max(sprite.height, height));
+}
+
 timeline.api = {
     _items: {},
     _time: 0,
@@ -63,6 +76,8 @@ timeline.api = {
         this._scale = ms;
     },
     build: function build() {
+        var fontSize = 16;
+
         // build the items
         this._stage = new PIXI.Container();
 
@@ -86,7 +101,7 @@ timeline.api = {
             for (var idx = 0; idx < this._items[thread].length; ++idx) {
                 var item = this._items[thread][idx];
                 // our position on the canvas is (start - first) / scale
-                var pitem = new PIXI.Graphics();
+                var pitem = new PIXI.Graphics(), txt;
                 pitem.beginFill(0xFFFF00);
                 pitem.drawRect(0, 0,
                                Math.max((item.stop - item.start) / this._scale, 10), threadHeight);
@@ -103,7 +118,13 @@ timeline.api = {
 
                 // check if we overlap an existing item
                 var overlaps = findOverlapping(pitem, threadContainer.children);
-                if (overlaps) {
+                if (!overlaps) {
+                    // add a text node
+                    txt = new PIXI.Text(item.name, { fontSize: fontSize });
+                    txt = ensureSize(txt, pitem.width, pitem.height);
+                    txt.y = (pitem.height / 2) - (txt.height / 2);
+                    pitem.addChild(txt);
+                } else {
                     // we overlap, make a new item and remove the old
                     var x = Math.min(overlaps.x, pitem.x);
                     var x2 = Math.max(overlaps.x + overlaps.width, pitem.x + pitem.width);
@@ -117,6 +138,11 @@ timeline.api = {
                     pitem.y = y;
                     pitem._timeline = overlaps._timeline;
                     pitem._timeline.push(item);
+
+                    txt = new PIXI.Text(overlaps._timeline[0].name + "+", { fontSize: fontSize });
+                    txt = ensureSize(txt, pitem.width, pitem.height);
+                    txt.y = (pitem.height / 2) - (txt.height / 2);
+                    pitem.addChild(txt);
 
                     threadContainer.removeChild(overlaps);
                 }
