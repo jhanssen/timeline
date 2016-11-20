@@ -33,7 +33,7 @@ scrollbar = {
 
         var scrollBarHeight = getScrollBarHeight() + 1;
         this._scroll = document.getElementById("scroller");
-        this._scroll.setAttribute("style",`overflow:auto;height:${scrollBarHeight}px;width:${api.width}px`);
+        this._scroll.setAttribute("style",`overflow:auto;height:${scrollBarHeight}px;width:${api.width}px;position:relative;left:${api.ThreadColumnWidth}px`);
         this._scrollInner = document.getElementById("scroller-inner");
         this._scrollInner.setAttribute("style",`overflow:auto;height:${scrollBarHeight}px;width:0px`);
 

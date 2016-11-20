@@ -1,4 +1,4 @@
-/*global timeline,performance,PIXI*/
+/*global timeline,performance,PIXI,$*/
 
 timeline.Item = function Item(start, stop, thread, name, descr)
 {
@@ -33,13 +33,16 @@ function ensureSize(sprite, width, height)
 }
 
 timeline.api = {
-    _items: {},
+    ThreadColumnWidth: 120,
+
+    _items: new Map(),
     _time: 0,
     _scale: 100,
     _width: undefined,
     _height: undefined,
     _renderer: undefined,
     _stage: undefined,
+    _threads: undefined,
     _first: undefined,
     _last: undefined,
     _time: 0,
@@ -50,12 +53,18 @@ timeline.api = {
     get scale() { return this._scale; },
 
     setup: function setup(width, height) {
-        this._renderer = PIXI.autoDetectRenderer(width, height);
+        this._width = width - timeline.api.ThreadColumnWidth;
+        this._height = height;
+
+        this._renderer = PIXI.autoDetectRenderer(this._width, this._height);
         this._renderer.autoResize = true;
         var parent = document.getElementById("timeline");
         parent.appendChild(this._renderer.view);
-        this._width = width;
-        this._height = height;
+
+        this._threadRenderer = PIXI.autoDetectRenderer(timeline.api.ThreadColumnWidth, height);
+        this._threadRenderer.autoResize = true;
+        parent = document.getElementById("threads");
+        parent.appendChild(this._threadRenderer.view);
     },
     add: function add(item) {
         // console.log("adding", item);
@@ -87,6 +96,7 @@ timeline.api = {
 
         // build the items
         this._stage = new PIXI.Container();
+        this._threads = new PIXI.Container();
 
         // each thread gets 'threadHeight' pixels height
         var threadHeight = 30;
@@ -167,10 +177,18 @@ timeline.api = {
 
                 threadContainer.addChild(pitem);
             }
+
+            var threadItem = new PIXI.Text(thread, { fontSize: fontSize, fill: 0xFFFFFF });
+            threadItem = ensureSize(threadItem, timeline.api.ThreadColumnWidth, threadHeight);
+            threadItem.y = y;
+            this._threads.addChild(threadItem);
+
             y += threadHeight + threadPadding;
+
             this._stage.addChild(threadContainer);
         }
 
         this._renderer.render(this._stage);
+        this._threadRenderer.render(this._threads);
     }
 };
