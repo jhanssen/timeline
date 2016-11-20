@@ -77,8 +77,8 @@ timeline.api = {
     },
     inview: function inview(item) {
         // our view is from x=this._time / this._scale to x+this._width
-        var x = this._time / this._scale;
-        var x2 = x + this._width;
+        var x = this._time;
+        var x2 = x + (this._width * this._scale);
         // console.log("inview", x, x2, item.start, item.stop);
         return Math.max(x, item.start) <= Math.min(x2, item.stop);
     },
@@ -116,7 +116,7 @@ timeline.api = {
                 pitem.drawRect(0, 0,
                                Math.max((item.stop - item.start) / this._scale, 10), threadHeight);
                 pitem.endFill();
-                pitem.x = item.start - this._first - this._time / this._scale;
+                pitem.x = (item.start - this._first - this._time) / this._scale;
                 pitem.y = y;
 
                 pitem._timeline = [item];
