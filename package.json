@@ -1,0 +1,16 @@
+{
+  "name": "timeline",
+  "version": "1.0.0",
+  "description": "Timeline",
+  "main": "index.js",
+  "dependencies": {
+    "bower-requirejs": "^1.2.0",
+    "bower": "^1.8.0"
+  },
+  "devDependencies": {},
+  "keywords": [
+    "timeline"
+  ],
+  "author": "",
+  "license": "MIT"
+}
