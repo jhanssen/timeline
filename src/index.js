@@ -19,6 +19,9 @@ function start()
     var item1 = new timeline.Item(150, 250, "thread 1", "some name", "some description");
     timeline.api.add(item1);
 
+    var item11 = new timeline.Item(240, 350, "thread 1", "some name", "some description");
+    timeline.api.add(item11);
+
     var item2 = new timeline.Item(1700, 1990, "thread 1", "some name", "some description");
     timeline.api.add(item2);
 

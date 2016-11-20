@@ -139,10 +139,15 @@ timeline.api = {
                     pitem._timeline = overlaps._timeline;
                     pitem._timeline.push(item);
 
-                    txt = new PIXI.Text(overlaps._timeline[0].name + "+", { fontSize: fontSize });
-                    txt = ensureSize(txt, pitem.width, pitem.height);
-                    txt.y = (pitem.height / 2) - (txt.height / 2);
-                    pitem.addChild(txt);
+                    if (pitem._timeline.length == 2) {
+                        txt = new PIXI.Text(overlaps._timeline[0].name + "+", { fontSize: fontSize });
+                        txt = ensureSize(txt, pitem.width, pitem.height);
+                        txt.y = (pitem.height / 2) - (txt.height / 2);
+                        pitem.addChild(txt);
+                    } else {
+                        // we already added a '+'
+                        pitem.addChild(overlaps.children[0]);
+                    }
 
                     threadContainer.removeChild(overlaps);
                 }
