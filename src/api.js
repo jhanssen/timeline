@@ -111,11 +111,6 @@ timeline.api = {
 
                 pitem._timeline = [item];
 
-                // console.log(item instanceof timeline.Item);
-                // console.log(item);
-                // console.log(item.start, this._first, this._scale);
-                // console.log((item.start - this._first) / this._scale, y);
-
                 // check if we overlap an existing item
                 var overlaps = findOverlapping(pitem, threadContainer.children);
                 if (!overlaps) {
@@ -151,6 +146,14 @@ timeline.api = {
 
                     threadContainer.removeChild(overlaps);
                 }
+
+                pitem.mouseover = (e) => {
+                    console.log("Mouseover", e);
+                };
+                pitem.mouseout = (e) => {
+                    console.log("Mouseout", e);
+                };
+                pitem.interactive = true;
 
                 threadContainer.addChild(pitem);
             }
