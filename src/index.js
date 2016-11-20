@@ -16,16 +16,19 @@ function start()
     var item = new timeline.Item(100, 200, "thread 1", "some name", "some description");
     timeline.api.add(item);
 
-    var item0 = new timeline.Item(1700, 1990, "thread 1", "some name", "some description");
-    timeline.api.add(item0);
+    var item1 = new timeline.Item(150, 250, "thread 1", "some name", "some description");
+    timeline.api.add(item1);
 
-    var item2 = new timeline.Item(170, 270, "thread 2", "some name", "some description");
+    var item2 = new timeline.Item(1700, 1990, "thread 1", "some name", "some description");
     timeline.api.add(item2);
 
-    var item3 = new timeline.Item(300, 2000, "thread 2", "some name", "some description");
+    var item3 = new timeline.Item(170, 270, "thread 2", "some name", "some description");
     timeline.api.add(item3);
 
-    timeline.api.setScale(2);
+    var item4 = new timeline.Item(300, 2000, "thread 2", "some name", "some description");
+    timeline.api.add(item4);
+
+    timeline.api.setScale(1);
     timeline.api.build();
 
     var scrollBarHeight = getScrollBarHeight();
