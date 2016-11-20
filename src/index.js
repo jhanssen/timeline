@@ -1,4 +1,12 @@
-/*global require,PIXI,timeline,setTimeout*/
+/*global require,PIXI,timeline,setTimeout,$*/
+
+function getScrollBarHeight()
+{
+    var outer = $('<div>').css({visibility: 'hidden', height: 100, overflow: 'scroll'}).appendTo('body');
+    var heightWithScroll = $('<div>').css({height: '100%'}).appendTo(outer).outerHeight();
+    outer.remove();
+    return 100 - heightWithScroll;
+};
 
 function start()
 {
@@ -20,10 +28,12 @@ function start()
     timeline.api.setScale(2);
     timeline.api.build();
 
+    var scrollBarHeight = getScrollBarHeight();
     var scroll = document.getElementById("scroller");
-    scroll.setAttribute("style","overflow:auto;height:15px;width:" + timeline.api.width + "px");
+    scroll.setAttribute("style",`overflow:auto;height:${scrollBarHeight}px;width:${timeline.api.width}px`);
     var scrollInner = document.getElementById("scroller-inner");
-    scrollInner.setAttribute("style","overflow:auto;height:15px;width:" + (timeline.api.end / timeline.api.scale) + "px");
+    var scrollBarEnd = timeline.api.end / timeline.api.scale;
+    scrollInner.setAttribute("style",`overflow:auto;height:${scrollBarHeight}px;width:${scrollBarEnd}px`);
     scroll.addEventListener('scroll', (e) => {
         timeline.api.setTime(e.target.scrollLeft * timeline.api.scale);
     });
@@ -31,8 +41,8 @@ function start()
 
 timeline = {};
 
-require(['config'], function() {
-    require(['pixi','api'], function() {
-        start();
+require(['config'], () => {
+    require(['jquery'], () => {
+        require(['pixi','api'], start);
     });
 });
