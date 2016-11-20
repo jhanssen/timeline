@@ -98,6 +98,7 @@ function start()
         //console.log("thread", thread);
         //console.log(sample);
         var item = new timeline.Item(sample.us_start / 1000, (sample.us_start + sample.us_length) / 1000, thread, sample.name, "");
+        item.samples = sample;
         timeline.api.add(item);
 
         scrollbar.update();
