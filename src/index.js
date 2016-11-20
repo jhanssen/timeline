@@ -1,16 +1,15 @@
-/*global require*/
-
-console.log("hello");
+/*global require,PIXI,timeline*/
 
 function start()
 {
-    console.log("starting");
+    console.log("starting", PIXI);
+    timeline.api.setup(1280, 720);
 }
 
-require(['config'], function() {
-    console.log("config loaded");
+timeline = {};
 
-    require(['pixi'], function() {
+require(['config'], function() {
+    require(['pixi','api'], function() {
         start();
     });
 });
