@@ -4,7 +4,7 @@
     "Jan Erik Hanssen <jhanssen@gmail.com>"
   ],
   "description": "Timeline browser component",
-  "main": "index.js",
+  "main": "index.html",
   "keywords": [
     "timeline",
     "browser",
