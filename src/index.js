@@ -1,4 +1,4 @@
-/*global require,PIXI,timeline,remotery,setTimeout,scrollbar,$*/
+/*global require,PIXI,timeline,remotery,setTimeout,scrollbar,event,$*/
 
 function getScrollBarHeight()
 {
@@ -7,6 +7,20 @@ function getScrollBarHeight()
     outer.remove();
     return 100 - heightWithScroll;
 };
+
+function setScale(el)
+{
+    if (event.keyCode == 13) {
+        console.log("scale is now", el.value);
+        if (timeline && timeline.api) {
+            timeline.api.setScale(parseFloat(el.value));
+            scrollbar.update();
+            scrollbar.reset();
+            timeline.api.setTime(0);
+            timeline.api.build();
+        }
+    }
+}
 
 var ws;
 
@@ -43,6 +57,9 @@ scrollbar = {
                 this._timer = undefined;
             }, 500);
         }
+    },
+    reset: () => {
+        this._scroll.scrollLeft = 0;
     }
 };
 

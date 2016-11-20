@@ -79,7 +79,7 @@ timeline.api = {
         // our view is from x=this._time / this._scale to x+this._width
         var x = this._time / this._scale;
         var x2 = x + this._width;
-        console.log("inview", x, x2, item.start, item.stop);
+        // console.log("inview", x, x2, item.start, item.stop);
         return Math.max(x, item.start) <= Math.min(x2, item.stop);
     },
     build: function build() {
