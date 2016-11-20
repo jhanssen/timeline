@@ -111,9 +111,9 @@ timeline.api = {
                     pitem = new PIXI.Graphics();
                     pitem.beginFill(0xFFFF00);
                     pitem.drawRect(0, 0,
-                                   Math.max((x2 - x) / this._scale, 10), threadHeight);
+                                   Math.max(x2 - x, 10), threadHeight);
                     pitem.endFill();
-                    pitem.x = x / this._scale;
+                    pitem.x = x;
                     pitem.y = y;
                     pitem._timeline = overlaps._timeline;
                     pitem._timeline.push(item);
