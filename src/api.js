@@ -29,7 +29,7 @@ function ensureSize(sprite, width, height)
 {
     if (sprite.width <= width && sprite.height <= height)
         return sprite;
-    return cropSprite(sprite, Math.min(sprite.width, width), Math.max(sprite.height, height));
+    return cropSprite(sprite, Math.min(sprite.width, width), Math.min(sprite.height, height));
 }
 
 timeline.api = {
@@ -42,6 +42,7 @@ timeline.api = {
     _stage: undefined,
     _first: undefined,
     _last: undefined,
+    _time: 0,
 
     get end() { return this._last - this._first; },
     get width() { return this._width; },
@@ -69,11 +70,17 @@ timeline.api = {
         //item._added = performance.now() - this._setup;
     },
     setTime: function setTime(time) {
-        this._stage.x = -(time / this._scale);
-        this._renderer.render(this._stage);
+        this._time = time;
     },
     setScale: function setScale(ms) {
         this._scale = ms;
+    },
+    inview: function inview(item) {
+        // our view is from x=this._time / this._scale to x+this._width
+        var x = this._time / this._scale;
+        var x2 = x + this._width;
+        console.log("inview", x, x2, item.start, item.stop);
+        return Math.max(x, item.start) <= Math.min(x2, item.stop);
     },
     build: function build() {
         var fontSize = 16;
@@ -100,13 +107,16 @@ timeline.api = {
             var threadContainer = new PIXI.Container();
             for (var idx = 0; idx < this._items[thread].length; ++idx) {
                 var item = this._items[thread][idx];
+                if (!this.inview(item))
+                    continue;
+
                 // our position on the canvas is (start - first) / scale
                 var pitem = new PIXI.Graphics(), txt;
                 pitem.beginFill(0xFFFF00);
                 pitem.drawRect(0, 0,
                                Math.max((item.stop - item.start) / this._scale, 10), threadHeight);
                 pitem.endFill();
-                pitem.x = (item.start - this._first) / this._scale;
+                pitem.x = item.start - this._first - this._time / this._scale;
                 pitem.y = y;
 
                 pitem._timeline = [item];
